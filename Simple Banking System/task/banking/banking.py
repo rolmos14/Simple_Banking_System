@@ -5,8 +5,24 @@ class Card:
 
     def __init__(self):
         """The constructor to initialize the object."""
-        self.number = 4 * 10 ** 15 + random.randint(0, 9999999999)
-        self.pin = random.randint(0, 9999)
+        self.number = str(4 * 10 ** 14 + random.randint(0, 999999999))
+        self.number += self.checksum(self.number)
+        self.pin = str(random.randint(0, 9999)).rjust(4, '0')
+
+    def checksum(self, number):
+        """Returns checksum digit using Luhn algorithm"""
+        total_sum = 0
+        for i in range(len(number)):
+            n = int(number[i])
+            if i % 2 == 0:
+                n *= 2
+            if n > 9:
+                n -= 9
+            total_sum += n
+        checksum = total_sum % 10
+        if checksum > 0:
+            checksum = 10 - checksum
+        return str(checksum)
 
 
 class Account:
@@ -49,8 +65,8 @@ class Bank:
         return finish
 
     def login_request(self):
-        card_number = int(input("\nEnter your card number:\n"))
-        card_pin = int(input("Enter your PIN:\n"))
+        card_number = input("\nEnter your card number:\n")
+        card_pin = input("Enter your PIN:\n")
 
         # Search for existing account and verify PIN
         finish = False  # variable to return True if direct Exit selected
