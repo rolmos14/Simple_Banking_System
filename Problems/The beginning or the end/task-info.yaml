@@ -1,0 +1,12 @@
+type: code
+custom_name: The beginning or the end?
+files:
+- name: main.py
+  visible: true
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/14900#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Fri, 03 Sep 2021 15:50:05 UTC
+record: -1
