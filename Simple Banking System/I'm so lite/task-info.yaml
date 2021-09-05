@@ -279,6 +279,15 @@ files:
   text: |
     # Write your code here
   learner_created: false
+- name: temp.s3db
+  visible: true
+  learner_created: true
+- name: card.s3db
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/109/stages/593/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sun, 05 Sep 2021 16:23:41 UTC
 record: -1

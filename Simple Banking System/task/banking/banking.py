@@ -17,7 +17,7 @@ class Bank:
                                       "(id INTEGER, number TEXT, pin TEXT, balance INTEGER DEFAULT 0);")
             self.cards_db_conn.commit()
         except sqlite3.OperationalError:
-            pass
+            pass  # DB already exists
 
     def new_account(self):
         # Create data of new account
@@ -50,7 +50,7 @@ class Bank:
             checksum = 10 - checksum
         return str(checksum)
 
-    def login_successful(self, account):
+    def login_successful(self, account_data):
         print('\nYou have successfully logged in!\n')
         finish = False  # variable to return True if direct Exit selected
         while True:
@@ -59,7 +59,7 @@ class Bank:
                   "0. Exit")
             option = int(input())
             if option == 1:
-                print(f"\nBalance: {account.balance}\n")
+                print(f"\nBalance: {account_data[3]}\n")
             elif option == 2:
                 print('\nYou have successfully logged out!\n')
                 break
@@ -72,15 +72,13 @@ class Bank:
         card_number = input("\nEnter your card number:\n")
         card_pin = input("Enter your PIN:\n")
 
-        # Search for existing account in DB
-        self.cards_db_cur.execute(f"SELECT number, pin FROM card WHERE number = {card_number} AND pin = {card_pin};")
-        ## CONTINUE HERE WITH FETCHONE, IF SOME RESULT THEN IT IS SUCCESFULL LOGIN AND WE CAN SEND BALANCE TO LOGIN_SUCCESSFUL METHOD
-        # Search for existing account and verify PIN
+        # Search for existing account-PIN in DB
+        self.cards_db_cur.execute(f"SELECT * FROM card WHERE number = {card_number} AND pin = {card_pin};")
+        account_data = self.cards_db_cur.fetchone()
+
         finish = False  # variable to return True if direct Exit selected
-        for account in self.accounts:
-            if account.card.number == card_number and account.card.pin == card_pin:
-                finish = self.login_successful(account)
-                break
+        if account_data != None:
+            finish = self.login_successful(account_data)
         # If account doesn't exist
         else:
             print("\nWrong card number or PIN!\n")
